@@ -96,9 +96,9 @@ def create_event(title, summary, information, start_date, end_date, start_time, 
 
 	return event.key.urlsafe()
 
-def edit_event(title, summary, information, start_date, end_date, start_time, end_time, attendance, location, event_number):
+def edit_event(title, summary, information, start_date, end_date, start_time, end_time, attendance, location, id):
 
-	event = get_event_info(event_number)
+	event = get_event_info(id)
 	event.populate(title=title,
 		summary=summary,
 		information=information,
@@ -115,7 +115,7 @@ def edit_event(title, summary, information, start_date, end_date, start_time, en
 	memcache.delete('events')
 	memcache.set(event.key.urlsafe(), event, namespace='event')
 
-	return event_number
+	return event.key.urlsafe()
 
 def delete_event(id):
 	event = get_event_info(id)
