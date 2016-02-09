@@ -118,7 +118,7 @@ class EditHandler(webapp2.RequestHandler):
 
 		event_number = models.edit_event(title, summary, information, start_date, end_date, start_time, end_time, attendance, location, id)
 
-		self.redirect("/event?id=" + str(event_number))
+		self.redirect("/event?id=" + id)
 
 class display_event(webapp2.RequestHandler):
 	def get(self):

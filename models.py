@@ -33,7 +33,7 @@ class event_info(ndb.Model):
 	attendance = ndb.IntegerProperty() ## assuming this is a number for now
 	time_created = ndb.DateTimeProperty(auto_now_add=True)
 	votes = ndb.IntegerProperty()
-	event_number = ndb.IntegerProperty()
+	#event_number = ndb.IntegerProperty()
 	user = ndb.StringProperty()
 	has_up_voted = ndb.StringProperty(repeated=True)
 	has_down_voted = ndb.StringProperty(repeated=True)
