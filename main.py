@@ -264,7 +264,7 @@ class about(webapp2.RequestHandler):
 class test(webapp2.RequestHandler):
 	def get(self):
 	
-		models.create_global_id()
+	#	models.create_global_id()
 		page_params = {
 		'user_email': get_user_email(),
 		'login_url': users.create_login_url(),

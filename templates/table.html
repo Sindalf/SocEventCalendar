@@ -49,7 +49,7 @@
 
 			{% for event_info in list %}
 					<tr.table-hover>
-						<th><a href = "/event?id={{event_info.event_number}}">{{event_info.title}}</a></th>
+						<th><a href = "/event?id={{event_info.key.urlsafe}}">{{event_info.title}}</a></th>
 						<th>{{event_info.summary}}</th>
 						<th>{{event_info.start_date}}</th>
 						<th>{{event_info.start_time}}</th>

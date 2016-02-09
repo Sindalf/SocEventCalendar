@@ -56,16 +56,16 @@
 				
 				<tbody>
 
-				{% for event_info in list %}
+				{% for event in list %}
 						<tr.table-hover>
-							<th><a href = "/event?id={{event_info.event_number}}">{{event_info.title}}</a></th>
-							<th>{{event_info.summary}}</th>
-							<th>{{event_info.start_date}}</th>
-							<th>{{event_info.start_time}}</th>
-							<th>{{event_info.end_date}}</th>
-							<th>{{event_info.end_time}}</th>
-							<th>{{event_info.location}}</th>
-							<th hidden>{{event_info.user}}</th>
+							<th><a href = "/event?id={{event.key.urlsafe}}">{{event.title}}</a></th>
+							<th>{{event.summary}}</th>
+							<th>{{event.start_date}}</th>
+							<th>{{event.start_time}}</th>
+							<th>{{event.end_date}}</th>
+							<th>{{event.end_time}}</th>
+							<th>{{event.location}}</th>
+							<th hidden>{{event.user}}</th>
 							
 						</tr>
 				{% endfor %}

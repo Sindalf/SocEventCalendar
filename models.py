@@ -9,11 +9,11 @@ from google.appengine.ext import ndb
 from google.appengine.api import memcache
 
 
-class global_id(ndb.Model):
-	next_id = ndb.IntegerProperty()
-
-	def increase_id(self):
-		self.next_id = self.next_id + 1
+##class global_id(ndb.Model):
+##	next_id = ndb.IntegerProperty()
+#
+#	def increase_id(self):
+#		self.next_id = self.next_id + 1
 
 class user_profile(ndb.Model):
 	user_id = ndb.StringProperty()
@@ -68,11 +68,11 @@ def setFeatured(id):
 	event = get_event_info(id)
 	event.featured = not event.featured
 	event.put()
-	memcache.set(str(event.event_number), event, namespace='event')
+	memcache.set(event.key.urlsafe(), event, namespace='event')
 
 def create_event(title, summary, information, start_date, end_date, start_time, end_time, attendance, location, email):
 
-	event_number = get_global_id()
+	#event_number = get_global_id()
 	event = event_info()
 	event.populate(title=title,
 		summary=summary,
@@ -85,16 +85,16 @@ def create_event(title, summary, information, start_date, end_date, start_time, 
 		location=location,
 		featured=False,
 		votes=0,
-		user=email,
-		event_number = event_number,)
+		user=email,)
+		#event_number = event_number,)
 
-	event.key = ndb.Key(event_info, event_number)
+	##event.key = ndb.Key(event_info, event_number)
 	event.put()
 
 	memcache.delete('events')
-	memcache.set(str(event.event_number), event, namespace='event')
+	memcache.set(event.key.urlsafe(), event, namespace='event')
 
-	return event_number
+	return event.key.urlsafe()
 
 def edit_event(title, summary, information, start_date, end_date, start_time, end_time, attendance, location, event_number):
 
@@ -113,10 +113,26 @@ def edit_event(title, summary, information, start_date, end_date, start_time, en
 	event.put()
 
 	memcache.delete('events')
-	memcache.set(str(event.event_number), event, namespace='event')
+	memcache.set(event.key.urlsafe(), event, namespace='event')
 
 	return event_number
 
+def delete_event(id):
+	event = get_event_info(id)
+	event.delete_comments()
+	memcache.delete(id, namespace="event")
+	event.key.delete()
+
+
+def get_event_info(id):
+	result = memcache.get(id, namespace="event")
+	if not result:
+		#result = ndb.Key(event_info, int(id)).get()
+		key = ndb.Key(urlsafe=id)
+		result = key.get()
+		memcache.set(id, result, namespace='event')
+	return result
+	
 def DownVoteEvent(id, email):
 	event = get_event_info(id)
 
@@ -205,20 +221,6 @@ def get_by_location(location):
 		result.append(i)
 	return result
 
-def delete_event(id):
-	event = get_event_info(id)
-	event.delete_comments()
-	memcache.delete(id, namespace="event")
-	event.key.delete()
-
-
-def get_event_info(id):
-	result = memcache.get(id, namespace="event")
-	if not result:
-		result = ndb.Key(event_info, int(id)).get()
-		memcache.set(id, result, namespace='event')
-	return result
-
 def get_user_profile(id):
 	result = memcache.get(id, namespace="profile")
 	if not result:
@@ -234,16 +236,16 @@ def check_if_user_profile_exists(id):
 	##if q == []:
 	return q
 
-def get_global_id():
-	id = memcache.get("number", namespace="global_id")
-	if not id:
-		id = ndb.Key(global_id, "number").get()
-	logging.warning(id)
-	value = id.next_id
-	id.increase_id()
-	id.put()
-	memcache.set("number", id, namespace="global_id")
-	return value
+#def get_global_id():
+#	id = memcache.get("number", namespace="global_id")
+#	if not id:
+#		id = ndb.Key(global_id, "number").get()
+#	logging.warning(id)
+#	value = id.next_id
+#	id.increase_id()
+#	id.put()
+#	memcache.set("number", id, namespace="global_id")
+#	return value
 
 def update_profile(id, name, location, interests):
 	profile = get_user_profile(id)
@@ -259,12 +261,12 @@ def create_profile(id):
 
 	memcache.set(id, profile, namespace="profile")
 
-def create_global_id():
-	id = ndb.Key(global_id, "number").get()
-	#logging.warning(id)
-	if id == None:
-		id = global_id()
-		id.next_id = 1
-		id.key = ndb.Key(global_id, "number")
-		id.put()
-		memcache.set("number", id, namespace="global_id")
+#def create_global_id():
+#	id = ndb.Key(global_id, "number").get()
+#	#logging.warning(id)
+#	if id == None:
+#		id = global_id()
+#		id.next_id = 1
+#		id.key = ndb.Key(global_id, "number")
+#		id.put()
+#		memcache.set("number", id, namespace="global_id")

@@ -84,7 +84,7 @@
 		<div class="col-md-4 text-center">
 			<h3>Most Popular Events</h3>
 			{% for event in list %}
-			<h4> <a href = "/event?id={{event.event_number}}" style="text-decoration:none">{{event.title}}</a>
+			<h4> <a href = "/event?id={{event.key.urlsafe}}" style="text-decoration:none">{{event.title}}</a>
 			{% if event.votes > 0 %} +{{event.votes}}
 			{% else %} 0
 			{% endif %}
@@ -94,7 +94,7 @@
 		<div class="col-md-4 text-center">
 			<h3>Recently Added Events</h3>
 			{% for event in recent_events %}
-			<h4> <a href = "/event?id={{event.event_number}}" style="text-decoration:none">{{event.title}}</a>
+			<h4> <a href = "/event?id={{event.key.urlsafe}}" style="text-decoration:none">{{event.title}}</a>
 			{% if event.votes > 0 %} +{{event.votes}}
 			{% else %} 0
 			{% endif %}
@@ -104,7 +104,7 @@
 		<div class="col-md-4 text-center">
 			<h3>Featured Events</h3>
 			{% for event in featured %}
-			<h4> <a href = "/event?id={{event.event_number}}" style="text-decoration:none">{{event.title}}</a>
+			<h4> <a href = "/event?id={{event.key.urlsafe}}" style="text-decoration:none">{{event.title}}</a>
 			{% if event.votes > 0 %} +{{event.votes}}
 			{% else %} 0
 			{% endif %}

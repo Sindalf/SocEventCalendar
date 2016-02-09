@@ -24,12 +24,12 @@
 		<tr>
 			<td>
 				<form method="post" class="horizontal-form" action="/UpVote">
-					<input type="hidden" name="id" value="{{event.event_number}}">
+					<input type="hidden" name="id" value="{{event.key.urlsafe}}">
 					<input type="submit" class="btn btn-default" value="Upvote">
 				</form>
 			<br>
 				<form method="post" class="horizontal-form" action="/DownVote">
-					<input type="hidden" name="id" value="{{event.event_number}}">
+					<input type="hidden" name="id" value="{{event.key.urlsafe}}">
 					<input type="submit" class="btn btn-default" value="DownVote">
 				</form>
 			</td>	
@@ -37,13 +37,13 @@
 			{% if delete == 1 %}
 			<td>
 				<form method="get" class="horizontal-form" action="/edit">
-				<input type="hidden" name="id" value="{{event.event_number}}">
+				<input type="hidden" name="id" value="{{event.key.urlsafe}}">
 					<input type="submit" class="btn btn-default" value="Edit this event">
 				</form>
 			</td>
 			<td>
 				<form method="post" class="horizontal-form" action="/DeleteEvent">
-					<input type="hidden" name="id" value="{{event.event_number}}">
+					<input type="hidden" name="id" value="{{event.key.urlsafe}}">
 					<input type="submit" class="btn btn-default" value="Delete this event">
 				</form>
 			</td>
@@ -52,7 +52,7 @@
 			{% if is_admin == 1 %}
 			<td>
 				<form method="post" class="horizontal-form" action="/FeatureEvent">
-					<input type="hidden" name="id" value="{{event.event_number}}">
+					<input type="hidden" name="id" value="{{event.key.urlsafe}}">
 					<input type="submit" class="btn btn-default" value="Toggle Featured: {{event.featured}}">
 				</form>
 			</td>
@@ -84,7 +84,7 @@
 <div class ="container">
 <nc>Add New Comment:</nc>
 	<form method="post" action="/CommentHandler">
-	<input type="hidden" name="id" value="{{event.event_number}}">
+	<input type="hidden" name="id" value="{{event.key.urlsafe}}">
 	<textarea class="form-control input-md" rows="5" style="font-size:14pt" name="comment" maxlength=140></textarea><br>
 	<input type="submit" class="btn btn-default" value="Submit Post">
 	</form>
