@@ -3,12 +3,6 @@ import logging
 import os
 import webapp2
 import time
-#import httplib2
-
-#from apiclient import discovery
-#import oauth2client
-#from oauth2client import client
-#from oauth2client import tools
 
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
@@ -59,17 +53,27 @@ class DownVoteHandler(webapp2.RequestHandler):
 
 		self.redirect("/event?id=" + id)
 
+class DeleteComments(webapp2.RequestHandler):
+	def post(self):
+		id = self.request.get("id")
+		models.delete_comments(id)
+		
+		self.redirect("/event?id=" + id)
+		
 class DeleteEvent(webapp2.RequestHandler):
 	def post(self):
 		id = self.request.get("id")
 		models.delete_event(id)
-	#	event = models.get_event_info(id)
-	#	event.delete_comments()
-	#	event.key.delete()
-
-	#	time.sleep(0.1)
+		
 		self.redirect('/')
 
+class ClearVotes(webapp2.RequestHandler):
+	def post(self):
+		id = self.request.get("id")
+		models.clearVotes(id)
+		
+		self.redirect("/event?id=" + id)
+		
 class ProcessForm(webapp2.RequestHandler):
 	def post(self):
 		email = get_user_email()
@@ -264,7 +268,6 @@ class about(webapp2.RequestHandler):
 class test(webapp2.RequestHandler):
 	def get(self):
 	
-	#	models.create_global_id()
 		page_params = {
 		'user_email': get_user_email(),
 		'login_url': users.create_login_url(),
@@ -280,6 +283,7 @@ mappings = [
   ('/list', event_list),
   ('/addevent', AddEventPageHandler),
   ('/CommentHandler', CommentHandler),
+  ('/ClearVotes', ClearVotes),
   ('/UpVote', UpVoteHandler),
   ('/DownVote', DownVoteHandler),
   ('/DeleteEvent', DeleteEvent),
@@ -288,6 +292,7 @@ mappings = [
   ('/FeatureEvent', FeatureEvent),
   ('/test', test),
   ('/about', about),
+  ('/DeleteComments', DeleteComments),
 
 ]
 app = webapp2.WSGIApplication(mappings, debug = True)

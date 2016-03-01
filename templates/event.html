@@ -5,7 +5,7 @@
 <br><br><br>
 
 <body>
-<div class="container">
+<div class="eventcontainer">
 	<et>{{event.title}} :</et> <br>
 	<es>{{event.summary}}</es><br>
 	<ei>{{event.start_date}} @ {{event.start_time}}<br>
@@ -54,6 +54,18 @@
 				<form method="post" class="horizontal-form" action="/FeatureEvent">
 					<input type="hidden" name="id" value="{{event.key.urlsafe}}">
 					<input type="submit" class="btn btn-default" value="Toggle Featured: {{event.featured}}">
+				</form>
+			</td>
+			<td>
+				<form method="post" class="horizontal-form" action="/ClearVotes">
+					<input type="hidden" name="id" value="{{event.key.urlsafe}}">
+					<input type="submit" class="btn btn-default" value="Clear Votes">
+				</form>
+			</td>
+			<td>
+				<form method="post" class="horizontal-form" action="/DeleteComments">
+					<input type="hidden" name="id" value="{{event.key.urlsafe}}">
+					<input type="submit" class="btn btn-default" value="Delete Comments">
 				</form>
 			</td>
 			{% endif %}

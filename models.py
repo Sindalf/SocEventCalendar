@@ -9,12 +9,6 @@ from google.appengine.ext import ndb
 from google.appengine.api import memcache
 
 
-##class global_id(ndb.Model):
-##	next_id = ndb.IntegerProperty()
-#
-#	def increase_id(self):
-#		self.next_id = self.next_id + 1
-
 class user_profile(ndb.Model):
 	user_id = ndb.StringProperty()
 	name = ndb.StringProperty()
@@ -64,15 +58,28 @@ class event_comment(ndb.Model):
 	text = ndb.TextProperty()
 	time_created = ndb.DateTimeProperty(auto_now_add=True)
 
+def delete_comments(id):
+	event = get_event_info(id)
+	event.delete_comments()
+	event.put()
+	memcache.set(event.key.urlsafe(), event, namespace='event')
+	
 def setFeatured(id):
 	event = get_event_info(id)
 	event.featured = not event.featured
 	event.put()
 	memcache.set(event.key.urlsafe(), event, namespace='event')
 
+def clearVotes(id):
+	event = get_event_info(id)
+	del event.has_up_voted[:]
+	del event.has_down_voted[:]
+	event.votes = 0;
+	event.put()
+	memcache.set(event.key.urlsafe(), event, namespace='event')
+	
 def create_event(title, summary, information, start_date, end_date, start_time, end_time, attendance, location, email):
 
-	#event_number = get_global_id()
 	event = event_info()
 	event.populate(title=title,
 		summary=summary,
@@ -236,17 +243,6 @@ def check_if_user_profile_exists(id):
 	##if q == []:
 	return q
 
-#def get_global_id():
-#	id = memcache.get("number", namespace="global_id")
-#	if not id:
-#		id = ndb.Key(global_id, "number").get()
-#	logging.warning(id)
-#	value = id.next_id
-#	id.increase_id()
-#	id.put()
-#	memcache.set("number", id, namespace="global_id")
-#	return value
-
 def update_profile(id, name, location, interests):
 	profile = get_user_profile(id)
 	profile.populate(name = name, location = location, interests = interests)
@@ -260,13 +256,4 @@ def create_profile(id):
 	profile.put()
 
 	memcache.set(id, profile, namespace="profile")
-
-#def create_global_id():
-#	id = ndb.Key(global_id, "number").get()
-#	#logging.warning(id)
-#	if id == None:
-#		id = global_id()
-#		id.next_id = 1
-#		id.key = ndb.Key(global_id, "number")
-#		id.put()
-#		memcache.set("number", id, namespace="global_id")
+	
