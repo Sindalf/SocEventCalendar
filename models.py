@@ -79,7 +79,7 @@ def clearVotes(id):
     event = get_event_info(id)
     del event.has_up_voted[:]
     del event.has_down_voted[:]
-    event.votes = 0;
+    event.votes = 0
     event.put()
     memcache.set(event.key.urlsafe(), event, namespace='event')
 

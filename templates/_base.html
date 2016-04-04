@@ -17,19 +17,19 @@
 			</button>
 			<div class = "collapse navbar-collapse navHeaderCollapse">
 				<ul class = "nav navbar-nav navbar-right">
-					<li><a href = "/">Home</a></li>
+					<li><a href = "/" id="home">Home</a></li>
 					<li class = "dropdown">
-						<a href = "/" class = "dropdown-toggle" data-toggle = "dropdown">Events <b class = "caret"></b></a>
+						<a href = "/" id="eventmenu" class = "dropdown-toggle" data-toggle = "dropdown">Events <b class = "caret"></b></a>
 						<ul class = "dropdown-menu">
 							{% if user_email %}
-							<li><a href="/addevent">Add Event</a></li>
+							<li><a href="/addevent" id="addevent" >Add Event</a></li>
 							{% endif %}
-							<li><a href="/list">View Events</a></li>
+							<li><a href="/list" id="viewevents" >View Events</a></li>
 						</ul>
 					</li>
 					<li>
 						{% if user_email %}
-						<a href="/profile?id={{user_id}}&search={{user_email}}">Profile</a>
+						<a href="/profile?id={{user_id}}&search={{user_email}}" id="gotoprofile">Profile</a>
 						{% else %}
 						{% endif %}
 					</li>
@@ -40,8 +40,8 @@
 						<a href="{{ login_url }}" id="signin">Sign In</a>
 						{% endif %}
 					</li>
-					<li><a href = "/about">About Us</a></li>
-					<li><a href = "https://github.com/Sindalf/SocEventCalendar/">Github</a></li>
+					<li><a href = "/about" id="about">About Us</a></li>
+					<li><a href = "https://github.com/Sindalf/SocEventCalendar/" id="github">Github</a></li>
 				</ul>
 			</div>
 		</div>
